@@ -46,14 +46,14 @@ function draw() {
   console.log(grabbable);
   if (showPings) {
     attractors.forEach((a) => {
-      strokeWeight(1.0/height);
+      strokeWeight(1.0/width);
       if (a == grabbable) {
         stroke(255, 0, 0);
       } else {
         stroke(255);
       }
       vfill(a);
-      ellipse(a.e(1), a.e(2), 5.0/width, 5.0/width);
+      ellipse(a.e(1), a.e(2), 5.0/width, 5.0/height);
     });
   }
   noStroke();
