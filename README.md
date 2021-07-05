@@ -6,12 +6,13 @@ To use the toy, go [here](https://remyporter.github.io/AttractiveToy/), then:
 # Basic Editing
 * `click+drag`: You can move the attractor points by moving your mouse close to them, and clicking and dragging when they appear red.
 * `click`: You can add new attractor points by clicking anywhere else on the canvas.
-* ` `: You can randomly change the color of the last attractor you added or grabbed with the spacebar.
-* `r`: You can remove the last attractor you touched with the "r" key.
+* `c`: You can randomly change the color of the last attractor you added or grabbed with the spacebar.
+* `DELETE`: You can remove the last attractor you touched with the "delete" key.
 * `+`: you can increase the "lerp" step with "+"
 * `-`: you can decrease the "lerp" step with "-"
 * `p`: you can hide the "pings" for the attractors with this key, useful if you want to save your image.
-* `c`: you can clear/reset the drawing with "c".
+* `r`: you can clear/reset the drawing with "r".
+* ` `/`ESC`: pause rendering
 
 # Group Management
 This tool supports multiple affinity groups.

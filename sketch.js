@@ -1,5 +1,5 @@
 const N = 3;
-const SPEED = 6000;
+let SPEED = 6000;
 const GRAB_RADIUS=0.04;
 const COLOR_MAP = {
   "1": "#ff0000",
@@ -14,6 +14,8 @@ let grabbable = null;
 let lastGrabbed = null;
 let showPings = true;
 let lerpDist = 0.5;
+let paused = false;
+let colorRGB = true;
 
 function choice(arr) {
   return arr[Math.floor(Math.random()*arr.length)]
@@ -107,12 +109,12 @@ function drawGroup(gm, id) {
         strokeWeight(1.0/width);
         stroke(COLOR_MAP[id]);
         if (a == grabbable) {
-          stroke(255, 255, 255);
+          stroke(1.0, 1.0, 1.0);
         }
         vfill(a);
         if (a == lastGrabbed) {
           strokeWeight(3.0/width);
-          fill(255);
+          fill(1.0);
         }
         ellipse(a.e(1), a.e(2), 5.0/width, 5.0/height);
       });
@@ -132,11 +134,15 @@ function drawAttractors(gm) {
 let tracepoint = Vector.Random(5);
 let gm = new GroupManager();
 
+function lerpPoint(a, b, lerpDist) {
+  let inv = b.subtract(a);
+  inv = inv.multiply(lerpDist);
+  return a.add(inv);
+}
+
 function step() {
   let dest = gm.nextPoint();
-  let inv = dest.subtract(tracepoint);
-  inv = inv.multiply(lerpDist);
-  tracepoint = tracepoint.add(inv);
+  tracepoint = lerpPoint(tracepoint, dest, lerpDist);
 }
 
 function seedAttractors() {
@@ -159,8 +165,8 @@ function vfill(vec) {
 }
 
 function draw() {
+  if (paused) return;
   scale(width, height);
-  console.log(grabbable);
   drawAttractors(gm);
   noStroke();
   for (let i = 0; i < SPEED; i++) {
@@ -171,13 +177,13 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key == "c") {
+  if (key == "r") {
     seedAttractors();
     background(0);
   } else if (key == "p") {
     showPings = !showPings;
     background(0);
-  } else if (key == "r") {
+  } else if (keyCode == DELETE) {
     gm.removeAttractor(lastGrabbed);
     background(0);
   } else if (key == "=" || key == "+") {
@@ -186,7 +192,7 @@ function keyPressed() {
   } else if (key == "-" || key == "_") {
     lerpDist -= 0.01;
     background(0);
-  } else if (key == " " && lastGrabbed != null) {
+  } else if (key == "c" && lastGrabbed != null) {
     lastGrabbed.elements[2] = random();
     lastGrabbed.elements[3] = random();
     lastGrabbed.elements[4] = random();
@@ -200,6 +206,20 @@ function keyPressed() {
   } else if (keyCode == DOWN_ARROW) {
     gm.groupSwitchProbability -= 0.01;
     background(0);
+  } else if (keyCode == ESCAPE || key == " ") {
+    paused = !paused;
+  } else if (keyCode == RIGHT_ARROW) {
+    SPEED += 500;
+  } else if (keyCode == LEFT_ARROW) {
+    SPEED -= 500;
+  } else if (key == "h") {
+    background(0);
+    colorRGB = !colorRGB;
+    if (colorRGB) {
+      colorMode(RGB, 1.0);
+    } else {
+      colorMode(HSB, 1.0);
+    }
   }
 }
 
